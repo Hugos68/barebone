@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { mergeBehavior } from "./behavior/apply-behavior.js";
-import { barebone } from "./behavior/barebone.js";
 import type { Behavior } from "./behavior/apply-behavior.js";
+import { barebone } from "./behavior/barebone.js";
 
 /**
  * Base class for all patterns

@@ -1,13 +1,13 @@
-import { SvelteSet } from "svelte/reactivity";
-import { Pattern } from "../../internal/pattern.js";
 import type { HTMLAttributes } from "svelte/elements";
+import { SvelteSet } from "svelte/reactivity";
 import { mergeBehavior } from "../../internal/behavior/apply-behavior.js";
-import { barebone } from "../../internal/behavior/barebone.js";
 import { aria } from "../../internal/behavior/aria.js";
+import { barebone } from "../../internal/behavior/barebone.js";
+import { on } from "../../internal/behavior/on.js";
 import { role } from "../../internal/behavior/role.js";
 import { tabindex } from "../../internal/behavior/tabindex.js";
-import { on } from "../../internal/behavior/on.js";
 import { PACKAGE_NAME } from "../../internal/constants.js";
+import { Pattern } from "../../internal/pattern.js";
 import { sibling } from "../../internal/sibling.js";
 
 interface AccordionOptions<ID extends string> {
