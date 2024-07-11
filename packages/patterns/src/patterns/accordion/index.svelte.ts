@@ -26,13 +26,11 @@ class Accordion {
 	toggle(value: unknown) {
 		if (this.opened.has(value)) {
 			this.opened.delete(value);
+		} else if (this.multiple) {
+			this.opened.add(value);
 		} else {
-			if (this.multiple) {
-				this.opened.add(value);
-			} else {
-				this.opened.clear();
-				this.opened.add(value);
-			}
+			this.opened.clear();
+			this.opened.add(value);
 		}
 	}
 }
