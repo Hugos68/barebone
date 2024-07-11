@@ -1,6 +1,6 @@
 # barebone
 
-Headless WACG patterns for the web.
+Headless WACG patterns for the web written with and for Svelte.
 
 # Frameworks
 
