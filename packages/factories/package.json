@@ -1,9 +1,13 @@
 {
-	"name": "@barebone/svelte",
+	"name": "@barebone/factories",
+	"description": "Headless UI factories for building accessible and performant user interfaces with Svelte.",
 	"version": "0.0.0",
-	"main": "dist/index.js",
+	"main": "./dist/index.js",
 	"exports": {
-		".": "./src/index.js"
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
 	},
 	"scripts": {
 		"dev": "tsc -w",
