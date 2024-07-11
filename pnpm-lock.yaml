@@ -12,24 +12,24 @@ importers:
         specifier: ^1.8.3
         version: 1.8.3
 
-  packages/svelte:
+  packages/patterns:
     dependencies:
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
-      svelte:
-        specifier: 5.0.0-next.175
-        version: 5.0.0-next.175
     devDependencies:
+      svelte:
+        specifier: 5.0.0-next.182
+        version: 5.0.0-next.182
       typescript:
         specifier: ^5.5.3
         version: 5.5.3
 
   sites/docs:
     devDependencies:
-      '@barebone/svelte':
+      '@barebone/patterns':
         specifier: workspace:*
-        version: link:../../packages/svelte
+        version: link:../../packages/patterns
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
         version: 3.2.2(@sveltejs/kit@2.5.18(@sveltejs/vite-plugin-svelte@3.1.1(svelte@5.0.0-next.175)(vite@5.3.3))(svelte@5.0.0-next.175)(vite@5.3.3))
@@ -1206,6 +1206,10 @@ packages:
     resolution: {integrity: sha512-fWMI0O3PiKFWvTohAEJRkd6RymR3uo7PO8GrNfyx57KDvmmK1KYRzAdHjx+RsKl8oZhfWeJHiot6iebgY8lJng==}
     engines: {node: '>=18'}
 
+  svelte@5.0.0-next.182:
+    resolution: {integrity: sha512-gut9qrZmxPo0eTL6YvVCPwPUFbfDSIABoqYGh4V0l0nuF+QyImcMgMwOcVr1VUpwRH+Zoem5EBNFBfNhPJY6fQ==}
+    engines: {node: '>=18'}
+
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
@@ -2344,6 +2348,22 @@ snapshots:
       typescript: 5.5.3
 
   svelte@5.0.0-next.175:
+    dependencies:
+      '@ampproject/remapping': 2.3.0
+      '@jridgewell/sourcemap-codec': 1.4.15
+      '@types/estree': 1.0.5
+      acorn: 8.12.1
+      acorn-typescript: 1.4.13(acorn@8.12.1)
+      aria-query: 5.3.0
+      axobject-query: 4.0.0
+      esm-env: 1.0.0
+      esrap: 1.2.2
+      is-reference: 3.0.2
+      locate-character: 3.0.0
+      magic-string: 0.30.10
+      zimmerframe: 1.1.2
+
+  svelte@5.0.0-next.182:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.4.15

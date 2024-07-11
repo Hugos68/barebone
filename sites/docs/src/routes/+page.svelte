@@ -1,17 +1,16 @@
 <script lang="ts">
-import { Accordion } from "@barebone/svelte";
+import { Accordion, AccordionItem } from "@barebone/patterns";
 
-const value = $state(["1", "2", "3"] as const);
-
-const accordion = new Accordion<(typeof value)[number]>();
+const accordion = new Accordion({ multiple: true });
 </script>   
 
 
-{#each value as item}
-    <button {...accordion.header(item)}>
+{#each ["1", "2", "3"] as _}
+    {@const item = new AccordionItem(accordion)}
+    <button {...item.headerProps()}>
         Open
     </button>
-    <div {...accordion.panel(item)}>
+    <div {...item.panelProps()}>
         {#if accordion.isOpen(item)}
             Content
         {/if}
