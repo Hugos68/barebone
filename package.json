@@ -7,7 +7,10 @@
 		"test": "pnpm --recursive --parallel test",
 		"format": "biome format --write",
 		"lint": "biome lint --write",
-		"check": "biome check --write"
+		"check": "biome check --write",
+		"ci:format": "biome format",
+		"ci:lint": "biome lint",
+		"ci:check": "biome check"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.3"

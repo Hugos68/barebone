@@ -6,10 +6,10 @@ const accordion = new Accordion({ multiple: false, opened: ["1", "2"] });
 
 {#each ["1", "2", "3"] as value}
     {@const item = new AccordionItem(accordion, value)}
-    <button {...item.headerProps()}>
+    <button {...item.header()}>
         Open
     </button>
-    <div {...item.panelProps()}>
+    <div {...item.panel()}>
         {#if item.open}
             Content
         {/if}

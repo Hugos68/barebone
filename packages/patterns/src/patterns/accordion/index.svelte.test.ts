@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Accordion, AccordionItem } from "./index.svelte.js";
 
 describe("Accordion", () => {
@@ -44,19 +44,19 @@ describe("Accordion", () => {
 			it("Sets `role` to 'button'", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, "1");
-				expect(item.headerProps().role).toBe("button");
+				expect(item.header().role).toBe("button");
 			});
 			it("Sets 'aria-expanded' to 'true' when 'open' is true", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, "1");
-				expect(item.headerProps()["aria-expanded"]).toBe(false);
+				expect(item.header()["aria-expanded"]).toBe(false);
 				accordion.toggle("1");
-				expect(item.headerProps()["aria-expanded"]).toBe(true);
+				expect(item.header()["aria-expanded"]).toBe(true);
 			});
 			it("Sets 'aria-controls' to the 'id' of the 'panel'", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, "1");
-				expect(item.headerProps()["aria-controls"]).toBe(item.panelProps().id);
+				expect(item.header()["aria-controls"]).toBe(item.panel().id);
 			});
 		});
 
@@ -65,9 +65,7 @@ describe("Accordion", () => {
 				const accordion = new Accordion();
 				accordion.toggle("1");
 				const item = new AccordionItem(accordion, "1");
-				expect(item.panelProps()["aria-labelledby"]).toBe(
-					item.headerProps().id,
-				);
+				expect(item.panel()["aria-labelledby"]).toBe(item.header().id);
 			});
 		});
 	});

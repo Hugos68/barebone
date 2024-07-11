@@ -26,11 +26,13 @@ class Accordion {
 	toggle(value: unknown) {
 		if (this.opened.has(value)) {
 			this.opened.delete(value);
-		} else if (this.multiple) {
-			this.opened.add(value);
 		} else {
-			this.opened.clear();
-			this.opened.add(value);
+			if (this.multiple) {
+				this.opened.add(value);
+			} else {
+				this.opened.clear();
+				this.opened.add(value);
+			}
 		}
 	}
 }
@@ -50,9 +52,9 @@ class AccordionItem {
 		this.panelId = createId();
 	}
 
-	headerProps(): Attributes {
+	header(): Attributes {
 		return merge(
-			barebone("factory", "accordion"),
+			barebone("pattern", "accordion"),
 			barebone("part", "header"),
 			id(this.headerId),
 			role("button"),
@@ -72,9 +74,9 @@ class AccordionItem {
 		);
 	}
 
-	panelProps(): Attributes {
+	panel(): Attributes {
 		return merge(
-			barebone("factory", "accordion"),
+			barebone("pattern", "accordion"),
 			barebone("part", "panel"),
 			id(this.panelId),
 			role("region"),
