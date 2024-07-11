@@ -2,9 +2,8 @@
 
 Headless WACG patterns for the web written with and for Svelte.
 
-# Frameworks
+# Patterns
 
-## Svelte
 | Pattern | src | test |
 | ------- | --- | ---- |
 | [Accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/) | ✅ | ✅ |
@@ -37,7 +36,3 @@ Headless WACG patterns for the web written with and for Svelte.
 | [Tree View](https://www.w3.org/WAI/ARIA/apg/patterns/tree/) | ❌ | ❌ |
 | [Treegrid](https://www.w3.org/WAI/ARIA/apg/patterns/treegrid/) | ❌ | ❌ |
 | [Window Splitter](https://www.w3.org/WAI/ARIA/apg/patterns/splitter/) | ❌ | ❌ |
-
-## React
-
-TBD
