@@ -7,7 +7,7 @@ Headless WACG patterns for the web.
 ## Svelte
 | Pattern | src | test |
 | ------- | --- | ---- |
-| [Accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/) | ✅ | ❌ |
+| [Accordion](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/) | ✅ | ✅ |
 | [Alert](https://www.w3.org/WAI/ARIA/apg/patterns/alert/) | ❌ | ❌ |
 | [Alert and Message Dialogs](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/) | ❌ | ❌ |
 | [Breadcrumb](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/) | ❌ | ❌ |

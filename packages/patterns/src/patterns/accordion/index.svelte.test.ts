@@ -28,7 +28,14 @@ describe("Accordion", () => {
 		it("Adds the item to the 'opened' Set when 'toggle' is called", () => {
 			const accordion = new Accordion();
 			accordion.toggle("1");
-			expect(accordion.opened.size).toBe(1);
+			expect(accordion.opened.has("1")).toBe(true);
+		});
+
+		it("Removes the item from the 'opened' Set when 'toggle' is called with the same value", () => {
+			const accordion = new Accordion();
+			accordion.toggle("1");
+			accordion.toggle("1");
+			expect(accordion.opened.has("1")).toBe(false);
 		});
 	});
 
@@ -54,7 +61,7 @@ describe("Accordion", () => {
 		});
 
 		describe("Panel", () => {
-			it("Sets 'aria-labelledby' to the 'headerId' when 'open' is true", () => {
+			it("Sets 'aria-labelledby' to the 'id' of the 'header'", () => {
 				const accordion = new Accordion();
 				accordion.toggle("1");
 				const item = new AccordionItem(accordion, "1");
