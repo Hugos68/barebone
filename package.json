@@ -4,6 +4,7 @@
 	"scripts": {
 		"build": "pnpm --recursive build",
 		"dev": "pnpm --recursive --parallel dev",
+		"test": "pnpm --recursive --parallel test",
 		"format": "biome format --write",
 		"lint": "biome lint --write",
 		"check": "biome check --write"

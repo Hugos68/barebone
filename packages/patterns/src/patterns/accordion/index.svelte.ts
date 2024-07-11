@@ -11,43 +11,43 @@ import type { Attributes } from "../../internal/types.js";
 
 interface AccordionOptions {
 	multiple?: boolean;
+	opened?: Array<unknown>;
 }
 
 class Accordion {
-	private opened: SvelteSet<AccordionItem>;
 	private options: AccordionOptions;
-	private multiple = $derived.by(() => this.options.multiple ?? false);
+	multiple = $derived.by(() => this.options.multiple ?? false);
+	opened = $derived.by(() => new SvelteSet(this.options.opened ?? []));
 
 	constructor(options: AccordionOptions = {}) {
-		this.opened = new SvelteSet();
 		this.options = options;
 	}
 
-	toggle(item: AccordionItem) {
-		if (this.opened.has(item)) {
-			this.opened.delete(item);
+	toggle(value: unknown) {
+		if (this.opened.has(value)) {
+			this.opened.delete(value);
 		} else {
 			if (this.multiple) {
-				this.opened.add(item);
+				this.opened.add(value);
 			} else {
 				this.opened.clear();
-				this.opened.add(item);
+				this.opened.add(value);
 			}
 		}
-	}
-
-	isOpen(item: AccordionItem) {
-		return this.opened.has(item);
 	}
 }
 
 class AccordionItem {
 	private accordion: Accordion;
+	private value: unknown;
 	private headerId: string;
 	private panelId: string;
 
-	constructor(accordion: Accordion) {
+	open = $derived.by(() => this.accordion.opened.has(this.value));
+
+	constructor(accordion: Accordion, value: unknown = this) {
 		this.accordion = accordion;
+		this.value = value;
 		this.headerId = createId();
 		this.panelId = createId();
 	}
@@ -59,16 +59,16 @@ class AccordionItem {
 			id(this.headerId),
 			role("button"),
 			tabindex(0),
-			aria("expanded", this.accordion.isOpen(this)),
+			aria("expanded", this.open),
 			aria("controls", this.panelId),
 			on("click", (event) => {
 				event.preventDefault();
-				this.accordion.toggle(this);
+				this.accordion.toggle(this.value);
 			}),
 			on("keydown", (event) => {
 				if (event.key === "Enter" || event.key === " ") {
 					event.preventDefault();
-					this.accordion.toggle(this);
+					this.accordion.toggle(this.value);
 				}
 			}),
 		);
@@ -86,3 +86,4 @@ class AccordionItem {
 }
 
 export { Accordion, AccordionItem };
+export type { AccordionOptions };

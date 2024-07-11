@@ -8,14 +8,19 @@
 	},
 	"scripts": {
 		"dev": "tsc -w",
-		"build": "tsc"
+		"build": "tsc",
+		"test": "vitest run"
 	},
 	"dependencies": {
-		"nanoid": "^5.0.7"
+		"nanoid": "^5.0.7",
+		"svelte": "5.0.0-next.182"
 	},
 	"devDependencies": {
-		"svelte": "5.0.0-next.182",
-		"typescript": "^5.5.3"
+		"@sveltejs/vite-plugin-svelte": "4.0.0-next.4",
+		"@testing-library/svelte": "^5.2.0",
+		"happy-dom": "^14.12.3",
+		"typescript": "^5.5.3",
+		"vitest": "^2.0.2"
 	},
 	"type": "module",
 	"license": "Apache-2.0"
