@@ -1,12 +1,18 @@
 import { SvelteSet } from "svelte/reactivity";
 import { aria } from "../../internal/attributes/aria.js";
-import { merge } from "../../internal/attributes/attribute.js";
 import { barebone } from "../../internal/attributes/barebone.js";
 import { id } from "../../internal/attributes/id.js";
+import { merge } from "../../internal/attributes/merge.js";
 import { on } from "../../internal/attributes/on.js";
 import { role } from "../../internal/attributes/role.js";
 import { tabindex } from "../../internal/attributes/tabindex.js";
 import { createId } from "../../internal/create-id.js";
+import {
+	getFirst,
+	getLast,
+	getNext,
+	getPrevious,
+} from "../../internal/element.js";
 import type { Attributes } from "../../internal/types.js";
 
 interface AccordionOptions {
@@ -15,11 +21,13 @@ interface AccordionOptions {
 }
 
 class Accordion {
+	private _id: string;
 	private options: AccordionOptions;
 	multiple = $derived.by(() => this.options.multiple ?? false);
 	opened = $derived.by(() => new SvelteSet(this.options.opened ?? []));
 
 	constructor(options: AccordionOptions = {}) {
+		this._id = createId();
 		this.options = options;
 	}
 
@@ -34,6 +42,10 @@ class Accordion {
 				this.opened.add(value);
 			}
 		}
+	}
+
+	get id() {
+		return this._id;
 	}
 }
 
@@ -54,7 +66,9 @@ class AccordionItem {
 
 	header(): Attributes {
 		return merge(
+			barebone("pattern-id", this.accordion.id),
 			barebone("pattern", "accordion"),
+			barebone("part-id", this.headerId),
 			barebone("part", "header"),
 			id(this.headerId),
 			role("button"),
@@ -66,17 +80,95 @@ class AccordionItem {
 				this.accordion.toggle(this.value);
 			}),
 			on("keydown", (event) => {
-				if (event.key === "Enter" || event.key === " ") {
-					event.preventDefault();
-					this.accordion.toggle(this.value);
+				if (event.key !== "Enter") {
+					return;
 				}
+				event.preventDefault();
+				this.accordion.toggle(this.value);
+			}),
+			on("keydown", (event) => {
+				if (event.key !== " ") {
+					return;
+				}
+				event.preventDefault();
+				this.accordion.toggle(this.value);
+			}),
+			on("keydown", (event) => {
+				if (
+					event.key !== "ArrowUp" ||
+					!(event.currentTarget instanceof HTMLElement)
+				) {
+					return;
+				}
+				const target = getPrevious(
+					`[data-barebone-pattern-id="${this.accordion.id}"][data-barebone-part="header"]`,
+					event.currentTarget,
+				);
+				if (target === undefined) {
+					return;
+				}
+				event.preventDefault();
+				target.focus();
+			}),
+			on("keydown", (event) => {
+				if (
+					event.key !== "ArrowDown" ||
+					!(event.currentTarget instanceof HTMLElement)
+				) {
+					return;
+				}
+				const target = getNext(
+					`[data-barebone-pattern-id="${this.accordion.id}"][data-barebone-part="header"]`,
+					event.currentTarget,
+				);
+				if (target === undefined) {
+					return;
+				}
+				event.preventDefault();
+				target.focus();
+			}),
+
+			on("keydown", (event) => {
+				if (
+					event.key !== "Home" ||
+					!(event.currentTarget instanceof HTMLElement)
+				) {
+					return;
+				}
+				const target = getFirst(
+					`[data-barebone-pattern-id="${this.accordion.id}"][data-barebone-part="header"]`,
+				);
+				if (target === undefined) {
+					return;
+				}
+				event.preventDefault();
+				target.focus();
+			}),
+
+			on("keydown", (event) => {
+				if (
+					event.key !== "End" ||
+					!(event.currentTarget instanceof HTMLElement)
+				) {
+					return;
+				}
+				const target = getLast(
+					`[data-barebone-pattern-id="${this.accordion.id}"][data-barebone-part="header"]`,
+				);
+				if (target === undefined) {
+					return;
+				}
+				event.preventDefault();
+				target.focus();
 			}),
 		);
 	}
 
 	panel(): Attributes {
 		return merge(
+			barebone("pattern-id", this.accordion.id),
 			barebone("pattern", "accordion"),
+			barebone("part-id", this.panelId),
 			barebone("part", "panel"),
 			id(this.panelId),
 			role("region"),

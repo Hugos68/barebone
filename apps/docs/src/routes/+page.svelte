@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Accordion, AccordionItem } from "@barebone/patterns";
 
-const accordion = new Accordion({ multiple: false, opened: ["1", "2"] });
+const accordion = new Accordion();
 </script>   
 
 {#each ["1", "2", "3"] as value}
@@ -11,7 +11,8 @@ const accordion = new Accordion({ multiple: false, opened: ["1", "2"] });
     </button>
     <div {...item.panel()}>
         {#if item.open}
-            Content
+            <input />
+            <button>Hello</button>
         {/if}
     </div>
 {/each}
