@@ -1,12 +1,9 @@
-import { nanoid } from "nanoid";
+import { Part } from "./part.js";
 
-abstract class Pattern<Options = unknown> {
-	id: string;
-	name: string;
+abstract class Pattern<Options = unknown> extends Part {
 	protected options: Options;
 	constructor(name: string, options: Options) {
-		this.id = nanoid();
-		this.name = name;
+		super(name);
 		this.options = options;
 	}
 }

@@ -1,7 +1,7 @@
 import type { Pattern } from "./pattern.js";
 
 abstract class Item<TPattern extends Pattern> {
-	protected pattern: TPattern;
+	pattern: TPattern;
 	protected value: unknown;
 	constructor(pattern: TPattern, value: unknown = this) {
 		this.pattern = pattern;
