@@ -1,14 +1,10 @@
 import { attribute } from "./attribute.js";
 
 const on = <K extends keyof HTMLElementEventMap>(
-	key: K,
-	...callbacks: Array<(event: HTMLElementEventMap[K]) => void>
+	name: K,
+	handler: (event: HTMLElementEventMap[K]) => void,
 ) => {
-	return attribute(`on${key}`, (event: HTMLElementEventMap[K]) => {
-		for (const callback of callbacks) {
-			callback(event);
-		}
-	});
+	return attribute(`on${name}`, handler);
 };
 
 export { on };

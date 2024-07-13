@@ -1,19 +1,19 @@
-const getLast = (selector: string) => {
+const get_last = (selector: string) => {
 	return Array.from(document.querySelectorAll<HTMLElement>(selector)).at(-1);
 };
 
-const getFirst = (selector: string) => {
+const get_first = (selector: string) => {
 	return Array.from(document.querySelectorAll<HTMLElement>(selector)).at(0);
 };
 
-const getPrevious = (selector: string, element: HTMLElement) => {
+const get_previous = (selector: string, element: HTMLElement) => {
 	const elements = Array.from(document.querySelectorAll<HTMLElement>(selector));
 	return elements[elements.indexOf(element) - 1];
 };
 
-const getNext = (selector: string, element: HTMLElement) => {
+const get_next = (selector: string, element: HTMLElement) => {
 	const elements = Array.from(document.querySelectorAll<HTMLElement>(selector));
 	return elements[elements.indexOf(element) + 1];
 };
 
-export { getLast, getFirst, getPrevious, getNext };
+export { get_last, get_first, get_previous, get_next };

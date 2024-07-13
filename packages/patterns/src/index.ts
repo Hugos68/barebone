@@ -1,4 +1,1 @@
-export {
-	Accordion,
-	AccordionItem,
-} from "./patterns/accordion/index.svelte.js";
+export * from "./patterns/accordion/index.svelte.js";

@@ -1,4 +1,5 @@
-import { describe, expect, it, vi } from "vitest";
+import { SvelteSet } from "svelte/reactivity";
+import { describe, expect, it } from "vitest";
 import { Accordion, AccordionItem } from "./index.svelte.js";
 
 describe("Accordion", () => {
@@ -19,7 +20,7 @@ describe("Accordion", () => {
 		});
 
 		it("Sets 'opened' to the provided option", () => {
-			const accordion = new Accordion({ opened: ["1"] });
+			const accordion = new Accordion({ opened: new SvelteSet(["1"]) });
 			expect(accordion.opened.size).toBe(1);
 		});
 	});
@@ -44,28 +45,32 @@ describe("Accordion", () => {
 			it("Sets `role` to 'button'", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, "1");
-				expect(item.header().role).toBe("button");
+				expect(item.header.attributes().role).toBe("button");
 			});
 			it("Sets 'aria-expanded' to 'true' when 'open' is true", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, "1");
-				expect(item.header()["aria-expanded"]).toBe(false);
+				expect(item.header.attributes()["aria-expanded"]).toBe(false);
 				accordion.toggle("1");
-				expect(item.header()["aria-expanded"]).toBe(true);
+				expect(item.header.attributes()["aria-expanded"]).toBe(true);
 			});
 			it("Sets 'aria-controls' to the 'id' of the 'panel'", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, "1");
-				expect(item.header()["aria-controls"]).toBe(item.panel().id);
+				expect(item.header.attributes()["aria-controls"]).toBe(
+					item.panel.attributes().id,
+				);
 			});
 		});
 
 		describe("Panel", () => {
 			it("Sets 'aria-labelledby' to the 'id' of the 'header'", () => {
 				const accordion = new Accordion();
-				accordion.toggle("1");
+				accordion.toggle({ value: "1" });
 				const item = new AccordionItem(accordion, "1");
-				expect(item.panel()["aria-labelledby"]).toBe(item.header().id);
+				expect(item.panel.attributes()["aria-labelledby"]).toBe(
+					item.header.attributes().id,
+				);
 			});
 		});
 	});

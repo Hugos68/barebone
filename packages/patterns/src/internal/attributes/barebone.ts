@@ -1,4 +1,4 @@
-import { PACKAGE_NAME } from "../constants.js";
+import { PACKAGE_NAME } from "../utilites/constants.js";
 import { data } from "./data.js";
 
 type BareboneName = "pattern" | "part" | "pattern-id" | "part-id";
