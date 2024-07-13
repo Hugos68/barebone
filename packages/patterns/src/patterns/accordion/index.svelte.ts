@@ -1,6 +1,5 @@
 import { nanoid } from "nanoid";
 import { SvelteSet } from "svelte/reactivity";
-import { aR } from "vitest/dist/reporters-BECoY4-b.js";
 import { Pattern } from "../../internal/anatomy/pattern.js";
 import { SubPatternPart } from "../../internal/anatomy/sub-pattern-part.js";
 import { SubPattern } from "../../internal/anatomy/sub-pattern.js";
