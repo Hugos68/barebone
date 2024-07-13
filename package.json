@@ -2,7 +2,7 @@
 	"name": "@barebone/monorepo",
 	"private": true,
 	"scripts": {
-		"build": "pnpm --recursive --parallel build",
+		"build": "pnpm --recursive build",
 		"dev": "pnpm --recursive --parallel dev",
 		"test": "pnpm --recursive --parallel test",
 		"format": "biome format --write",
