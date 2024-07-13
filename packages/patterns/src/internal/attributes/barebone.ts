@@ -1,7 +1,7 @@
 import { PACKAGE_NAME } from "../utilites/constants.js";
 import { data } from "./data.js";
 
-type BareboneName = "pattern" | "part" | "pattern-id" | "part-id";
+type BareboneName = "pattern" | "part" | "pattern-id" | "part-id" | "value";
 
 const barebone = (name: BareboneName, value: unknown) => {
 	return data(`${PACKAGE_NAME}-${name}`, value);

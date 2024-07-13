@@ -1,9 +1,11 @@
 import type { Pattern } from "./pattern.js";
 
-abstract class SubPattern<TPattern extends Pattern> {
+abstract class SubPattern<TPattern extends Pattern, Options> {
 	pattern: TPattern;
-	constructor(pattern: TPattern) {
+	options: Options;
+	constructor(pattern: TPattern, options: Options) {
 		this.pattern = pattern;
+		this.options = options;
 	}
 }
 

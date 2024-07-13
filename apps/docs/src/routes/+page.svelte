@@ -5,7 +5,7 @@ const accordion = new Accordion();
 
 <div {...accordion.attributes()}>
     {#each ["1", "2", "3"] as value}
-        {@const item = new AccordionItem(accordion)}
+        {@const item = new AccordionItem(accordion, { disabled: true })}
         <button {...item.header.attributes()}>
             Open
         </button>

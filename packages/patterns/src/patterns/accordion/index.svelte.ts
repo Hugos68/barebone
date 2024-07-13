@@ -1,4 +1,6 @@
+import { nanoid } from "nanoid";
 import { SvelteSet } from "svelte/reactivity";
+import { aR } from "vitest/dist/reporters-BECoY4-b.js";
 import { Pattern } from "../../internal/anatomy/pattern.js";
 import { SubPatternPart } from "../../internal/anatomy/sub-pattern-part.js";
 import { SubPattern } from "../../internal/anatomy/sub-pattern.js";
@@ -18,7 +20,12 @@ import {
 
 interface AccordionOptions {
 	multiple?: boolean;
-	opened?: SvelteSet<unknown>;
+	opened?: SvelteSet<string>;
+}
+
+interface AccordionItemOptions {
+	value?: string;
+	disabled?: boolean;
 }
 
 class Accordion extends Pattern<AccordionOptions> {
@@ -29,7 +36,7 @@ class Accordion extends Pattern<AccordionOptions> {
 		super("accordion", options);
 	}
 
-	open(value: unknown) {
+	open(value: string) {
 		if (this.multiple) {
 			this.opened.add(value);
 		} else {
@@ -38,11 +45,11 @@ class Accordion extends Pattern<AccordionOptions> {
 		}
 	}
 
-	close(value: unknown) {
+	close(value: string) {
 		this.opened.delete(value);
 	}
 
-	toggle(value: unknown) {
+	toggle(value: string) {
 		if (this.opened.has(value)) {
 			this.close(value);
 		} else {
@@ -58,16 +65,18 @@ class Accordion extends Pattern<AccordionOptions> {
 	}
 }
 
-class AccordionItem extends SubPattern<Accordion> {
+class AccordionItem extends SubPattern<Accordion, AccordionItemOptions> {
+	value = $derived.by(() => this.options.value ?? nanoid());
+	disabled = $derived.by(() => this.options.disabled ?? false);
 	header: AccordionHeader;
 	panel: AccordionPanel;
-	value: unknown;
-	constructor(pattern: Accordion, value?: unknown) {
-		super(pattern);
+
+	constructor(pattern: Accordion, options: AccordionItemOptions = {}) {
+		super(pattern, options);
 		this.header = new AccordionHeader(this);
 		this.panel = new AccordionPanel(this);
-		this.value = value ?? this;
 	}
+
 	get open() {
 		return this.pattern.opened.has(this.value);
 	}
@@ -77,32 +86,37 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 	constructor(item: AccordionItem) {
 		super("header", item);
 	}
+
 	attributes() {
 		return attributes(
-			barebone("part-id", this.id),
+			barebone("part-id", this.item.value),
 			barebone("part", "header"),
 			id(this.id),
 			role("button"),
 			tabindex(0),
 			aria("expanded", this.item.open),
 			aria("controls", this.item.panel.id),
+			aria("disabled", this.item.disabled),
 			on("click", (event) => {
-				event.preventDefault();
-				this.item.pattern.toggle(this.item);
-			}),
-			on("keydown", (event) => {
-				if (event.key !== "Enter") {
+				if (this.item.disabled) {
 					return;
 				}
 				event.preventDefault();
-				this.item.pattern.toggle(this.item);
+				this.item.pattern.toggle(this.item.value);
 			}),
 			on("keydown", (event) => {
-				if (event.key !== " ") {
+				if (event.key !== "Enter" || this.item.disabled) {
 					return;
 				}
 				event.preventDefault();
-				this.item.pattern.toggle(this.item);
+				this.item.pattern.toggle(this.item.value);
+			}),
+			on("keydown", (event) => {
+				if (event.key !== " " || this.item.disabled) {
+					return;
+				}
+				event.preventDefault();
+				this.item.pattern.toggle(this.item.value);
 			}),
 			on("keydown", (event) => {
 				if (
@@ -180,6 +194,7 @@ class AccordionPanel extends SubPatternPart<Accordion, AccordionItem> {
 	constructor(item: AccordionItem) {
 		super("panel", item);
 	}
+
 	attributes() {
 		return attributes(
 			barebone("part-id", this.id),
