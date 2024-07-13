@@ -1,10 +1,10 @@
-import type { Item } from "./item.js";
 import { Part } from "./part.js";
 import type { Pattern } from "./pattern.js";
+import type { SubPattern } from "./sub-pattern.js";
 
-abstract class ItemPart<
+abstract class SubPatternPart<
 	TPattern extends Pattern,
-	TItem extends Item<TPattern>,
+	TItem extends SubPattern<TPattern>,
 > extends Part {
 	protected item: TItem;
 	constructor(name: string, item: TItem) {
@@ -13,4 +13,4 @@ abstract class ItemPart<
 	}
 }
 
-export { ItemPart };
+export { SubPatternPart };

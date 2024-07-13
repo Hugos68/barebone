@@ -1,7 +1,7 @@
 import { SvelteSet } from "svelte/reactivity";
-import { ItemPart } from "../../internal/anatomy/item-part.js";
-import { Item } from "../../internal/anatomy/item.js";
 import { Pattern } from "../../internal/anatomy/pattern.js";
+import { SubPatternPart } from "../../internal/anatomy/sub-pattern-part.js";
+import { SubPattern } from "../../internal/anatomy/sub-pattern.js";
 import { aria } from "../../internal/attributes/aria.js";
 import { attributes } from "../../internal/attributes/attribute.js";
 import { barebone } from "../../internal/attributes/barebone.js";
@@ -58,20 +58,22 @@ class Accordion extends Pattern<AccordionOptions> {
 	}
 }
 
-class AccordionItem extends Item<Accordion> {
+class AccordionItem extends SubPattern<Accordion> {
 	header: AccordionHeader;
 	panel: AccordionPanel;
+	value: unknown;
 	constructor(pattern: Accordion, value?: unknown) {
-		super(pattern, value);
+		super(pattern);
 		this.header = new AccordionHeader(this);
 		this.panel = new AccordionPanel(this);
+		this.value = value ?? this;
 	}
 	get open() {
 		return this.pattern.opened.has(this.value);
 	}
 }
 
-class AccordionHeader extends ItemPart<Accordion, AccordionItem> {
+class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 	constructor(item: AccordionItem) {
 		super("header", item);
 	}
@@ -174,7 +176,7 @@ class AccordionHeader extends ItemPart<Accordion, AccordionItem> {
 	}
 }
 
-class AccordionPanel extends ItemPart<Accordion, AccordionItem> {
+class AccordionPanel extends SubPatternPart<Accordion, AccordionItem> {
 	constructor(item: AccordionItem) {
 		super("panel", item);
 	}
