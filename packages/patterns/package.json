@@ -3,8 +3,12 @@
 	"description": "Headless WACG patterns for building accessible and performant user interfaces with Svelte.",
 	"version": "0.0.0",
 	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"exports": {
-		".": "./dist/index.js"
+		".": {
+			"default": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
 	},
 	"scripts": {
 		"dev": "tsc -w",
