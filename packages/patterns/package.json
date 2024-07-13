@@ -4,9 +4,6 @@
 	"version": "0.0.0",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"exports": {
-		".": "./dist/index.js"
-	},
 	"scripts": {
 		"dev": "tsc -w",
 		"build": "tsc",
@@ -23,6 +20,6 @@
 		"typescript": "^5.5.3",
 		"vitest": "^2.0.2"
 	},
-	"type": "module",
-	"license": "Apache-2.0"
+	"license": "Apache-2.0",
+	"type": "module"
 }
