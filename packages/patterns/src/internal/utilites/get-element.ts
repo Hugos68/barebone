@@ -17,6 +17,7 @@ const get_previous = (selector: string, element: HTMLElement, loop = false) => {
 
 const get_next = (selector: string, element: HTMLElement, loop = false) => {
 	const elements = Array.from(document.querySelectorAll<HTMLElement>(selector));
+	console.log(elements);
 	const next = elements[elements.indexOf(element) + 1];
 	if (!loop) {
 		return next;

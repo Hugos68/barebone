@@ -49,8 +49,8 @@ class Accordion {
 
 	get attributes() {
 		return attributes(
-			barebone("pattern-id", this.#id),
-			barebone("pattern", this.#part),
+			barebone("part-id", this.#id),
+			barebone("part", this.#part),
 		);
 	}
 
@@ -179,7 +179,7 @@ class AccordionHeader {
 					return;
 				}
 				const target = get_previous(
-					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-part-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="${this.#part}"]`,
 					event.currentTarget,
 				);
 				if (target === undefined) {
@@ -196,7 +196,7 @@ class AccordionHeader {
 					return;
 				}
 				const target = get_next(
-					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-part-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="${this.#part}"]`,
 					event.currentTarget,
 				);
 				if (target === undefined) {
@@ -213,7 +213,7 @@ class AccordionHeader {
 					return;
 				}
 				const target = get_first(
-					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-part-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="${this.#part}"]`,
 				);
 				if (target === undefined) {
 					return;
@@ -229,7 +229,7 @@ class AccordionHeader {
 					return;
 				}
 				const target = get_last(
-					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-part-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="${this.#part}"]`,
 				);
 				if (target === undefined) {
 					return;
