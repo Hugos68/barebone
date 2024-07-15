@@ -45,20 +45,20 @@ describe("Accordion", () => {
 			it("Sets `role` to 'button'", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, { value: "1" });
-				expect(item.header.attributes().role).toBe("button");
+				expect(item.accordionHeader.attributes.role).toBe("button");
 			});
 			it("Sets 'aria-expanded' to 'true' when 'open' is true", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, { value: "1" });
-				expect(item.header.attributes()["aria-expanded"]).toBe(false);
+				expect(item.accordionHeader.attributes["aria-expanded"]).toBe(false);
 				accordion.toggle("1");
-				expect(item.header.attributes()["aria-expanded"]).toBe(true);
+				expect(item.accordionHeader.attributes["aria-expanded"]).toBe(true);
 			});
 			it("Sets 'aria-controls' to the 'id' of the 'panel'", () => {
 				const accordion = new Accordion();
 				const item = new AccordionItem(accordion, { value: "1" });
-				expect(item.header.attributes()["aria-controls"]).toBe(
-					item.panel.attributes().id,
+				expect(item.accordionHeader.attributes["aria-controls"]).toBe(
+					item.accordionPanel.attributes.id,
 				);
 			});
 		});
@@ -68,8 +68,8 @@ describe("Accordion", () => {
 				const accordion = new Accordion();
 				accordion.toggle("1");
 				const item = new AccordionItem(accordion, { value: "1" });
-				expect(item.panel.attributes()["aria-labelledby"]).toBe(
-					item.header.attributes().id,
+				expect(item.accordionPanel.attributes["aria-labelledby"]).toBe(
+					item.accordionHeader.attributes.id,
 				);
 			});
 		});

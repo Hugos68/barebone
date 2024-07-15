@@ -1,8 +1,5 @@
 import { nanoid } from "nanoid";
 import { SvelteSet } from "svelte/reactivity";
-import { Pattern } from "../../internal/anatomy/pattern.js";
-import { SubPatternPart } from "../../internal/anatomy/sub-pattern-part.js";
-import { SubPattern } from "../../internal/anatomy/sub-pattern.js";
 import { aria } from "../../internal/attributes/aria.js";
 import { attributes } from "../../internal/attributes/attribute.js";
 import { barebone } from "../../internal/attributes/barebone.js";
@@ -15,7 +12,7 @@ import {
 	get_last,
 	get_next,
 	get_previous,
-} from "../../internal/utilites/element.js";
+} from "../../internal/utilites/get-element.js";
 
 interface AccordionOptions {
 	multiple?: boolean;
@@ -27,95 +24,152 @@ interface AccordionItemOptions {
 	disabled?: boolean;
 }
 
-class Accordion extends Pattern<AccordionOptions> {
-	multiple = $derived.by(() => this.options.multiple ?? false);
-	opened = $derived.by(() => new SvelteSet(this.options.opened ?? []));
+class Accordion {
+	#id: string;
+	#part: string;
+	#options: AccordionOptions;
+	#multiple = $derived.by(() => this.#options.multiple ?? false);
+	#opened = $derived.by(() => this.#options.opened ?? new SvelteSet<string>());
 
 	constructor(options: AccordionOptions = {}) {
-		super("accordion", options);
+		this.#id = nanoid();
+		this.#part = "accordion";
+		this.#options = options;
+	}
+	get id() {
+		return this.#id;
+	}
+
+	get part() {
+		return this.#part;
+	}
+
+	get opened() {
+		return this.#opened;
+	}
+
+	get multiple() {
+		return this.#multiple;
+	}
+
+	get attributes() {
+		return attributes(
+			barebone("pattern-id", this.#id),
+			barebone("pattern", this.#part),
+		);
 	}
 
 	open(value: string) {
-		if (this.multiple) {
-			this.opened.add(value);
+		if (this.#multiple) {
+			this.#opened.add(value);
 		} else {
-			this.opened.clear();
-			this.opened.add(value);
+			this.#opened.clear();
+			this.#opened.add(value);
 		}
 	}
 
 	close(value: string) {
-		this.opened.delete(value);
+		this.#opened.delete(value);
 	}
 
 	toggle(value: string) {
-		if (this.opened.has(value)) {
+		if (this.#opened.has(value)) {
 			this.close(value);
 		} else {
 			this.open(value);
 		}
 	}
-
-	attributes() {
-		return attributes(
-			barebone("pattern-id", this.id),
-			barebone("pattern", "accordion"),
-		);
-	}
 }
 
-class AccordionItem extends SubPattern<Accordion, AccordionItemOptions> {
-	value = $derived.by(() => this.options.value ?? nanoid());
-	disabled = $derived.by(() => this.options.disabled ?? false);
-	header: AccordionHeader;
-	panel: AccordionPanel;
+class AccordionItem {
+	#accordion: Accordion;
+	#accordionHeader: AccordionHeader;
+	#accordionPanel: AccordionPanel;
+	#options: AccordionItemOptions;
+	#value = $derived.by(() => this.#options.value ?? nanoid());
+	#disabled = $derived.by(() => this.#options.disabled ?? false);
 
-	constructor(pattern: Accordion, options: AccordionItemOptions = {}) {
-		super(pattern, options);
-		this.header = new AccordionHeader(this);
-		this.panel = new AccordionPanel(this);
+	constructor(accordion: Accordion, options: AccordionItemOptions = {}) {
+		this.#accordion = accordion;
+		this.#accordionHeader = new AccordionHeader(this);
+		this.#accordionPanel = new AccordionPanel(this);
+		this.#options = options;
+	}
+
+	get accordion() {
+		return this.#accordion;
+	}
+
+	get accordionHeader() {
+		return this.#accordionHeader;
+	}
+
+	get accordionPanel() {
+		return this.#accordionPanel;
 	}
 
 	get open() {
-		return this.pattern.opened.has(this.value);
+		return this.#accordion.opened.has(this.#value);
+	}
+
+	get value() {
+		return this.#value;
+	}
+
+	get disabled() {
+		return this.#disabled;
 	}
 }
 
-class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
-	constructor(item: AccordionItem) {
-		super("header", item);
+class AccordionHeader {
+	#id: string;
+	#part: string;
+	accordionItem: AccordionItem;
+
+	constructor(accordionItem: AccordionItem) {
+		this.#id = nanoid();
+		this.#part = "accordion-header";
+		this.accordionItem = accordionItem;
 	}
 
-	attributes() {
+	get id() {
+		return this.#id;
+	}
+
+	get part() {
+		return this.#part;
+	}
+
+	get attributes() {
 		return attributes(
-			barebone("part-id", this.item.value),
-			barebone("part", "header"),
-			id(this.id),
+			barebone("part-id", this.accordionItem.value),
+			barebone("part", this.#part),
+			id(this.#id),
 			role("button"),
 			tabindex(0),
-			aria("expanded", this.item.open),
-			aria("controls", this.item.panel.id),
-			aria("disabled", this.item.disabled),
+			aria("expanded", this.accordionItem.open),
+			aria("controls", this.accordionItem.accordionPanel.id),
+			aria("disabled", this.accordionItem.disabled),
 			on("click", (event) => {
-				if (this.item.disabled) {
+				if (this.accordionItem.disabled) {
 					return;
 				}
 				event.preventDefault();
-				this.item.pattern.toggle(this.item.value);
+				this.accordionItem.accordion.toggle(this.accordionItem.value);
 			}),
 			on("keydown", (event) => {
-				if (event.key !== "Enter" || this.item.disabled) {
+				if (event.key !== "Enter" || this.accordionItem.disabled) {
 					return;
 				}
 				event.preventDefault();
-				this.item.pattern.toggle(this.item.value);
+				this.accordionItem.accordion.toggle(this.accordionItem.value);
 			}),
 			on("keydown", (event) => {
-				if (event.key !== " " || this.item.disabled) {
+				if (event.key !== " " || this.accordionItem.disabled) {
 					return;
 				}
 				event.preventDefault();
-				this.item.pattern.toggle(this.item.value);
+				this.accordionItem.accordion.toggle(this.accordionItem.value);
 			}),
 			on("keydown", (event) => {
 				if (
@@ -125,7 +179,7 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 					return;
 				}
 				const target = get_previous(
-					`[data-barebone-pattern-id="${this.item.pattern.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
 					event.currentTarget,
 				);
 				if (target === undefined) {
@@ -142,7 +196,7 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 					return;
 				}
 				const target = get_next(
-					`[data-barebone-pattern-id="${this.item.pattern.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
 					event.currentTarget,
 				);
 				if (target === undefined) {
@@ -151,7 +205,6 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 				event.preventDefault();
 				target.focus();
 			}),
-
 			on("keydown", (event) => {
 				if (
 					event.key !== "Home" ||
@@ -160,7 +213,7 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 					return;
 				}
 				const target = get_first(
-					`[data-barebone-pattern-id="${this.item.pattern.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
 				);
 				if (target === undefined) {
 					return;
@@ -168,7 +221,6 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 				event.preventDefault();
 				target.focus();
 			}),
-
 			on("keydown", (event) => {
 				if (
 					event.key !== "End" ||
@@ -177,7 +229,7 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 					return;
 				}
 				const target = get_last(
-					`[data-barebone-pattern-id="${this.item.pattern.id}"] > [data-barebone-part="header"]`,
+					`[data-barebone-pattern-id="${this.accordionItem.accordion.id}"] > [data-barebone-part="header"]`,
 				);
 				if (target === undefined) {
 					return;
@@ -189,20 +241,34 @@ class AccordionHeader extends SubPatternPart<Accordion, AccordionItem> {
 	}
 }
 
-class AccordionPanel extends SubPatternPart<Accordion, AccordionItem> {
-	constructor(item: AccordionItem) {
-		super("panel", item);
+class AccordionPanel {
+	#id: string;
+	#part: string;
+	accordionItem: AccordionItem;
+
+	constructor(accordionItem: AccordionItem) {
+		this.#id = nanoid();
+		this.#part = "accordion-panel";
+		this.accordionItem = accordionItem;
 	}
 
-	attributes() {
+	get id() {
+		return this.#id;
+	}
+
+	get part() {
+		return this.#part;
+	}
+
+	get attributes() {
 		return attributes(
-			barebone("part-id", this.id),
-			barebone("part", "panel"),
-			id(this.id),
+			barebone("part-id", this.#id),
+			barebone("part", this.#part),
+			id(this.#id),
 			role("region"),
-			aria("labelledby", this.item.header.id),
+			aria("labelledby", this.accordionItem.accordionHeader.id),
 		);
 	}
 }
 
-export { Accordion, AccordionItem, AccordionHeader, AccordionPanel };
+export { Accordion, AccordionItem };

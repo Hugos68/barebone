@@ -3,13 +3,13 @@ import { Accordion, AccordionItem } from "@barebone/patterns";
 const accordion = new Accordion();
 </script>   
 
-<div {...accordion.attributes()}>
+<div {...accordion.attributes}>
     {#each ["1", "2", "3"] as value}
-        {@const item = new AccordionItem(accordion, { disabled: true })}
-        <button {...item.header.attributes()}>
+        {@const item = new AccordionItem(accordion, { value })}
+        <button {...item.accordionHeader.attributes}>
             Open
         </button>
-        <div {...item.panel.attributes()}>
+        <div {...item.accordionPanel.attributes}>
             {#if item.open}
                 <input />
                 <button>Hello</button>
