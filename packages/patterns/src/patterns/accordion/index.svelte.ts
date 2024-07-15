@@ -19,11 +19,6 @@ interface AccordionOptions {
 	opened?: SvelteSet<string>;
 }
 
-interface AccordionItemOptions {
-	value?: string;
-	disabled?: boolean;
-}
-
 class Accordion {
 	#id: string;
 	#part: string;
@@ -79,6 +74,11 @@ class Accordion {
 			this.open(value);
 		}
 	}
+}
+
+interface AccordionItemOptions {
+	value?: string;
+	disabled?: boolean;
 }
 
 class AccordionItem {
