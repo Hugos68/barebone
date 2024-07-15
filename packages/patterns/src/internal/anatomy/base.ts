@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import type { Attributes } from "../attributes/attribute.js";
 
-abstract class Part {
+abstract class Base {
 	id: string;
 	name: string;
 	constructor(name: string) {
@@ -11,4 +11,4 @@ abstract class Part {
 	abstract attributes(): Attributes;
 }
 
-export { Part };
+export { Base };

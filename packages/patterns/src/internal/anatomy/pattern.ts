@@ -1,6 +1,6 @@
-import { Part } from "./part.js";
+import { Base } from "./base.js";
 
-abstract class Pattern<Options = unknown> extends Part {
+abstract class Pattern<Options = unknown> extends Base {
 	protected options: Options;
 	constructor(name: string, options: Options) {
 		super(name);
